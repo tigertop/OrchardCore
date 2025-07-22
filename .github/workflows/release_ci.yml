@@ -1,12 +1,6 @@
 name: Release - CI
 on:
-  push:
-    paths-ignore:
-      - '**/*.md'
-      - 'mkdocs.yml'
-      - 'src/docs/**/*'
-    tags: 
-      - 'v*.*.*'
+  workflow_dispatch:
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
