@@ -53,11 +53,14 @@ jobs:
         path: |
           test/OrchardCore.Tests.Functional/cms-tests/cypress/screenshots
           src/OrchardCore.Cms.Web/App_Data_Tests/logs
-    - name: Deploy release NuGet packages
+    - name: Deploy release NuGet packages to Azure Artifacts
       if: matrix.os == 'ubuntu-24.04'
+      env:
+        AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
       run: |
         dotnet pack -c Release --no-build -p:Version=${{ steps.get_version.outputs.VERSION }} -p:TreatWarningsAsErrors=false
-        dotnet nuget push './src/**/*.nupkg' -t 600 -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        dotnet nuget add source "https://pkgs.dev.azure.com/TopSoft365/_packaging/TopSoftPandora/nuget/v3/index.json" --name "AzureArtifacts" --username "anything" --password "${AZURE_DEVOPS_EXT_PAT}" --store-password-in-clear-text
+        dotnet nuget push './src/**/*.nupkg' --source "AzureArtifacts" --skip-duplicate
     - name: Set up Docker Buildx
       if: matrix.os == 'ubuntu-24.04'
       uses: docker/setup-buildx-action@v3
