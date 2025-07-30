@@ -42,5 +42,5 @@ jobs:
         AZURE_DEVOPS_EXT_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
       run: |
         dotnet pack -c Release --no-build -p:Version=${{ steps.get_version.outputs.VERSION }} -p:TreatWarningsAsErrors=false
-        dotnet nuget add source "https://pkgs.dev.azure.com/TopSoft365/_packaging/TopSoftPandora/nuget/v3/index.json" --name "AzureArtifacts" --username "anything" --password "${AZURE_DEVOPS_EXT_PAT}" --store-password-in-clear-text
+        dotnet nuget add source "https://pkgs.dev.azure.com/TopSoft365/ArCa/_packaging/ArCaFeed/nuget/v3/index.json" --name "AzureArtifacts" --username "anything" --password "${AZURE_DEVOPS_EXT_PAT}" --store-password-in-clear-text
         dotnet nuget push './src/**/*.nupkg' --source "AzureArtifacts" --api-key "AzureDevOps" --skip-duplicate
